@@ -10,7 +10,7 @@ with anyone or anything except for submission for grading.
 from tkinter import *
 
 window = Tk()
-window.title('')
+window.title('Bith date app')
 
 def leap_year(obj):
     '''
