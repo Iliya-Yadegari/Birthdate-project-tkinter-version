@@ -10,7 +10,7 @@ with anyone or anything except for submission for grading.
 from tkinter import *
 
 window = Tk()
-window.title('Bith date app')
+window.title('Birth date app')
 
 def leap_year(obj):
     '''
@@ -45,9 +45,9 @@ def size_check(obj, intobj):
 
 def range_check(obj1, obj2):
     '''
-    This function checks that obj1 is in range of obj2[0] and obj[1]
+    This function checks that obj1 is in range of obj2[0] and obj2[1]
     '''
-    if obj1 in range(obj2[0],obj2[1]):
+    if obj1 in range(obj2[0],obj2[1]+1):
         return True
     else:
         return False
@@ -102,14 +102,20 @@ def main():
        if result == True:
            days_in_month[2] = 29
        result = range_check(day, (1, days_in_month[month]))
+       
        if result == False:
            txt = "Error 03: wrong day entered"
     
+       try:
+            res_label = Label(window,text = txt)
+       except NameError:
+           res_label = Label(window,text = str(month_name[month - 1])+' '+ str(day)+', '+str(year))
+    
        # step 7
-       new_dob = str(month_name[month - 1])+' '+ str(day)+', '+str(year)
+
        
-       sanitized_label.grid(row = 2, column = 0, padx = 10, pady = 10)
-       res_label.grid(row = 3, column = 0, padx = 10, paddy = 10)
+       sanitizied_label.grid(row = 2, column = 0, padx = 10, pady = 10)
+       res_label.grid(row = 3, column = 0, padx = 10, pady = 10)
 
 userDate_label = Label(window,text = 'Plese enter your date of birth ===>')
 userDate_entry = Entry(window)
@@ -118,3 +124,5 @@ submit_btn = Button(window,text = 'Submit',width = 20,height = 3, command = main
 userDate_label.grid(row = 0, column = 0, padx = 10, pady = 10)
 userDate_entry.grid(row = 0, column = 1, padx = 10, pady = 10)
 submit_btn.grid(row = 1, column = 0, padx = 10, pady = 10)
+
+window.mainloop()
