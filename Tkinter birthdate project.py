@@ -9,6 +9,7 @@ with anyone or anything except for submission for grading.
 '''
 from tkinter import *
 
+
 window = Tk()
 window.title('Birth date app')
 
@@ -63,58 +64,76 @@ def main():
 
     if __name__ == "__main__":
        # step 1
-    
        
        userDate_get = userDate_entry.get()
-       # step 2
-
+           # step 2
+    
        month_name = ['Jan','Feb','Mar','Apr','May','Jun',
-                     'Jul','Aug','Sep','Oct','Nov','Dec']
+                         'Jul','Aug','Sep','Oct','Nov','Dec']
        days_in_month = {1:31, 2:28, 3:31, 4:30, 5:31, 6:30,
-                        7:31, 8:31, 9:30, 10:31, 11:30, 12:31}
+                            7:31, 8:31, 9:30, 10:31, 11:30, 12:31}
        user_raw_data = userDate_get
-       
-       # step 3
+           
        allow_chars = '0123456789'
        dob = sanitize(user_raw_data, allow_chars)
-       sanitizied_label = Label(window,text = 'Sanitized user data:'+ str(dob))
-       
-       # setp 4
-       result = size_check(dob,8)
-       if result == False:
+       try:
+           year = int(dob[0:4])
+           month = int(dob[4:6])
+           day = int(dob[6:])
+       except ValueError:
            txt = "Error 09: wrong data entered"
-       
-       # step 5
-       year = int(dob[0:4])
-       month = int(dob[4:6])
-       day = int(dob[6:])
-       
-       # step 6
-       result = range_check(year,(1900,9999))
-       if result == False:
-           txt = "Error 10: year out of range, must be 1900 or later"
+           sanitizied_label = Label(window,text = 'Sanitized user data: '+ str(dob))
+       else:    
+           
+           try: 
+               result = range_check(day, (1, days_in_month[month]))
+           except KeyError:
+               txt = "Error 02: Wrong month entered"
+               sanitizied_label = Label(window,text = 'Sanitized user data: '+ str(dob))
+               sanitizied_label.grid(row = 2, column = 0, padx = 10, pady = 10)
+               
+           else:    
+               
+               if result == False:
+                   txt = "Error 03: wrong day entered" 
     
-       result = range_check(month,(1,12))
-       if result == False:
-           txt = "Error 02: Wrong month entered"
+               
+               
+               # setp 4
+               result = size_check(dob,8)
+               if result == False:
+                   txt = "Error 09: wrong data entered"
+                   
+               # step 5
     
-       result = leap_year(year)
-       if result == True:
-           days_in_month[2] = 29
-       result = range_check(day, (1, days_in_month[month]))
-       
-       if result == False:
-           txt = "Error 03: wrong day entered"
-    
+               
+               # step 6
+               result = range_check(year,(1900,9999))
+               if result == False:
+                   txt = "Error 10: year out of range, must be 1900 or later"
+                   
+               result = range_check(month,(1,12))
+               if result == False:
+                   txt = "Error 02: Wrong month entered"
+                   
+               result = leap_year(year)
+               if result == True:
+                   days_in_month[2] = 29
+           
+               sanitizied_label = Label(window,text = 'Sanitized user data: '+ str(dob))
+
        try:
             res_label = Label(window,text = txt)
        except NameError:
            res_label = Label(window,text = str(month_name[month - 1])+' '+ str(day)+', '+str(year))
     
-       # step 7
 
+    
+       # step 7
+       
        
        sanitizied_label.grid(row = 2, column = 0, padx = 10, pady = 10)
+       
        res_label.grid(row = 3, column = 0, padx = 10, pady = 10)
 
 userDate_label = Label(window,text = 'Plese enter your date of birth ===>')
